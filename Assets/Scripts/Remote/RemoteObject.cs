@@ -1,0 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Net.Sockets;
+using System.Net;
+
+/// <summary>
+/// A RemoteObject is one that represents a physical remote Raspberry Pi.
+/// Either use abstractly with empty gameObjects, or listerally with sensors
+/// controlling its properties in Unity 3D space to create a virtual clone. 
+/// </summary>
+public class RemoteObject : MonoBehaviour
+{
+
+    public RemotePi remote;
+    // If set, this a RemotePi will be created with the given IP
+    // TODO: Eventually this should be handled at runtime as unique
+    // remotes will need to be identified
+    [SerializeField] string debugIPAddress;
+
+    private void Awake() {
+        // If the debug IP is set then we'll establish that connection.
+        if (debugIPAddress != "") {
+            remote = new RemotePi(debugIPAddress);
+        }
+    }
+
+
+    void SendRawCommand (string command) {
+        // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?
+        RemoteNetHandler.SendNetMessage(remote, command);
+    }
+
+    // Send da command
+    public void SendCommand(string module, string func, string[] args) {
+        string command = "/";
+        command += module + "/" + func;
+        foreach (string s in args) {
+            command += "/" + s;
+        }
+        SendRawCommand(command);
+    }
+
+    // TODO: this gets a bit redundant...
+    // Send a command from the given module with the given args
+    public void SendCommand (string module, string func, RemoteArgs args) {
+        SendCommand(module, func, args.AsArgs());
+    }
+
+    public void SendCommand (string module, string func, RemoteAsset assetRef) {
+        SendCommand(module, func, assetRef.AsArgs());
+    }
+
+}
