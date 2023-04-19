@@ -5,22 +5,25 @@ using UnityEngine;
 /// </summary>
 public class RemoteAudioSource : RemoteComponent {
 
+    AudioSource fallbackAudioSource;
+
     protected override void RemoteComponentAwake() {
         moduleName = "audio";
     }
 
     public override void ActivateFallback() {
-        if (fallbackMode) return;
         fallbackMode = true;
         
-        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        fallbackAudioSource = gameObject.AddComponent<AudioSource>();
     }
     
     // Play a sound from the remote device.
     public void Play (RemoteSound sound) {
         if (fallbackMode) {
             // If we're in fallback mode, just play the sound through the attached audio source.
-            GetComponent<AudioSource>().PlayOneShot(sound.clip);
+            AudioClip clip = sound.clip;
+            fallbackAudioSource.PlayOneShot(clip);
+            return;
         }
 
         SendCommand("play", sound);

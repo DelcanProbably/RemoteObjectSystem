@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RemoteAudioSource), typeof(RemoteGPIO))]
 public class DemoPongPaddle : MonoBehaviour
 {
     Rigidbody rb;
@@ -11,13 +12,15 @@ public class DemoPongPaddle : MonoBehaviour
 
     [SerializeField] float speed;
 
-    [SerializeField] RemoteAudioSource remoteAudioSource;
+    RemoteAudioSource remoteAudioSource;
     [SerializeField] RemoteSound hitSound;
-    [SerializeField] RemoteGPIO remoteGPIO;
+    RemoteGPIO remoteGPIO;
     [SerializeField] int LEDPin;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
+        remoteAudioSource = GetComponent<RemoteAudioSource>();
+        remoteGPIO = GetComponent<RemoteGPIO>();
     }
 
     private void Update() {

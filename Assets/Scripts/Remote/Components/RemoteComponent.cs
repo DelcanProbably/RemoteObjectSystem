@@ -1,6 +1,7 @@
 using UnityEngine;
 
 /// <summary>
+/// BASE CLASS FOR ALL REMOTE COMPONENTS
 /// A remote component is a component which can be applied to Unity GameObjects and
 /// corresponds directly to a module installed on the Remote Pi. All gameplay
 /// interaction with RemotePi's should be through a class of RemoteComponent.
@@ -16,20 +17,22 @@ public abstract class RemoteComponent : MonoBehaviour {
     
     private void Awake() {
         remote = GetComponent<RemoteObject>();
+        if (fallbackMode) {
+            ActivateFallback();
+        }
         RemoteComponentAwake();
     }
     // Run in Awake after RemoteComponent parent setup.
     protected abstract void RemoteComponentAwake();
 
     public virtual void ActivateFallback() {
-        Debug.LogWarning(name + " - A RemoteComponent on this object does not support fallback mode, but ActivateFallback has been called.");
+        Debug.LogWarning(name + " - fallback mode has been activated on a RemoteComponent but there is no implementation.");
     }
 
-    // TODO: bit redundant innit
+    // TODO: bit redundant innit - rewrite RemoteArgs system to get rid of this shenanigans
     protected void SendCommand(string func, string[] args) {
 
         if (fallbackMode) {
-            Debug.LogWarning("RemoteComponent on " + gameObject.name + " attempted to run a command in fallback mode. This shouldn't be happening - fallback mode is not properly implemented somewhere.");
             return;
         }
 

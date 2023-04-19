@@ -137,6 +137,9 @@ GameObject:
   - component: {fileID: 217208030}
   - component: {fileID: 217208029}
   - component: {fileID: 217208034}
+  - component: {fileID: 217208037}
+  - component: {fileID: 217208035}
+  - component: {fileID: 217208036}
   m_Layer: 0
   m_Name: LeftPaddle
   m_TagString: Untagged
@@ -159,6 +162,8 @@ MonoBehaviour:
   up: 119
   down: 115
   speed: 10
+  hitSound: {fileID: 11400000, guid: b9599a200229cb047a02af3afe796a36, type: 2}
+  LEDPin: 0
 --- !u!65 &217208030
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,6 +258,45 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &217208035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217208028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac1d1c3aa3c13749a6797f8fbd10ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallbackMode: 1
+--- !u!114 &217208036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217208028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f91dca3ecf5e6f47b3854d54e0be786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallbackMode: 1
+--- !u!114 &217208037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217208028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugIPAddress: 
 --- !u!1 &320994733
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +311,9 @@ GameObject:
   - component: {fileID: 320994735}
   - component: {fileID: 320994734}
   - component: {fileID: 320994739}
+  - component: {fileID: 320994742}
+  - component: {fileID: 320994741}
+  - component: {fileID: 320994740}
   m_Layer: 0
   m_Name: RightPaddle
   m_TagString: Untagged
@@ -289,6 +336,8 @@ MonoBehaviour:
   up: 273
   down: 274
   speed: 10
+  hitSound: {fileID: 11400000, guid: b9599a200229cb047a02af3afe796a36, type: 2}
+  LEDPin: 0
 --- !u!65 &320994735
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -383,6 +432,45 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &320994740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320994733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f91dca3ecf5e6f47b3854d54e0be786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallbackMode: 0
+--- !u!114 &320994741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320994733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac1d1c3aa3c13749a6797f8fbd10ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallbackMode: 1
+--- !u!114 &320994742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320994733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugIPAddress: 192.168.1.112
 --- !u!1 &1159029188
 GameObject:
   m_ObjectHideFlags: 0
