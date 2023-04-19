@@ -6,33 +6,30 @@ public class DemoPongBall : MonoBehaviour
 {
     Rigidbody rb;
     [SerializeField] float xSpeed = 5;
-    [SerializeField] GameObject leftWall;
-    [SerializeField] GameObject rightWall;
-    AudioSource localAudioSource;
-    [SerializeField] RemoteAudioSource remoteAudioSource;
-    [SerializeField] RemoteSound remoteSound;
+    float ySpeed = 0;
+    [SerializeField] float yBouncePoint;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
-        localAudioSource = GetComponent<AudioSource>();
-        if (localAudioSource.clip == null) {
-            Debug.LogWarning("No clip set on ball's Audio Source");
-        }
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new(xSpeed, 0, 0);
+        if (Mathf.Abs(transform.position.y) > yBouncePoint) {
+            ySpeed = -ySpeed;
+        }
+
+        rb.velocity = new(xSpeed, ySpeed, 0);
+
     }
 
     private void OnCollisionEnter(Collision other) {
         xSpeed = -xSpeed;
-        if (other.gameObject == leftWall) {
-            Debug.Log("Left wall!");
-            localAudioSource.Play();
-        } else if (other.gameObject == rightWall) {
-            Debug.Log("Right wall!");
-            remoteAudioSource.Play(remoteSound);
+        ySpeed = Random.Range(xSpeed, -xSpeed);
+
+        DemoPongPaddle paddle = other.gameObject.GetComponent<DemoPongPaddle>();
+        if (paddle) {
+            paddle.Hit();
         }
     }
 }

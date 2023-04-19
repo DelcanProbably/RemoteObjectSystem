@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Net;
 
+// unfinished
 public class RemoteInput : RemoteComponent
 {
     Socket socket;
