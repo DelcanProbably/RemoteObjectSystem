@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f91dca3ecf5e6f47b3854d54e0be786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallbackMode: 1
+  fallbackMode: 0
 --- !u!114 &217208037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugIPAddress: 
+  debugIPAddress: 192.168.43.91
 --- !u!1 &320994733
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugIPAddress: 192.168.1.112
+  debugIPAddress: 192.168.43.187
 --- !u!1 &1159029188
 GameObject:
   m_ObjectHideFlags: 0
