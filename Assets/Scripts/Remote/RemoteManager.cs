@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class RemoteManager : MonoBehaviour {
     
     static RemoteManager Instance;
-
     static Coroutine poker;
+
+    public List<RemoteObject> remotes = new List<RemoteObject>();
 
     // Poking sends a message regularly to keep a connection active.
     // This gets around some issues with inconsistent latency that can occur 
@@ -24,8 +26,16 @@ public class RemoteManager : MonoBehaviour {
         if (doPoking) StartPoking();
     }
 
+    
+    public static void RegisterRemote(RemoteObject remote) {
+        Instance.remotes.Add(remote);
+    }
+
+    public static List<RemoteObject> GetRemotes() {
+        return Instance.remotes;
+    }
+
     // See doPoking above
-    #region Poking
     // TODO: idk could probs be better as a simple class but it'll do
     public static void StartPoking() {
         if (poker != null) {
@@ -48,5 +58,4 @@ public class RemoteManager : MonoBehaviour {
             RemoteNetHandler.SendToAll("/poke/");
         }
     }
-    #endregion
 }

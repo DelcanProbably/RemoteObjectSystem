@@ -23,6 +23,7 @@ public class RemoteObject : MonoBehaviour
         if (debugIPAddress != "") {
             remote = new RemotePi(debugIPAddress);
         }
+        RemoteManager.RegisterRemote(this);
     }
 
 
