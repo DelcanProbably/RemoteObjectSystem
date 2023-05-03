@@ -13,6 +13,10 @@ public class DemoPongBall : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Update () {
+        if (Input.GetKeyDown(KeyCode.R)) transform.position = Vector3.zero;
+    }
+
     void FixedUpdate()
     {
         if (Mathf.Abs(transform.position.y) > yBouncePoint) {
