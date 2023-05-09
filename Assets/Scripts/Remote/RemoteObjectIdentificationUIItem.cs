@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using TMPro;
 
 public class RemoteObjectIdentificationUIItem : MonoBehaviour {
@@ -16,5 +17,6 @@ public class RemoteObjectIdentificationUIItem : MonoBehaviour {
 
     public void OnSelect () {
         handler.ItemSelected(remote, this);
+        GetComponentInChildren<Button>().interactable = false;
     }
 }

@@ -32,6 +32,13 @@ public class RemoteObject : MonoBehaviour
         }
     }
 
+    #if UNITY_EDITOR
+    private void Update() {
+        // Debug log info dump when f10 booped
+        if (Input.GetKeyDown(KeyCode.F10)) Debug.Log(remoteName + ", ip: " + remote.ip);
+    }
+    #endif
+
 
     void SendRawCommand (string command) {
         // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?

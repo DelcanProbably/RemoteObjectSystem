@@ -3,21 +3,35 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 
+public enum RemoteState {
+    Unassigned,
+    Assigned
+}
+
 /// <summary>
 /// A RemotePi is a direct network connection to a remote.
 /// This is the direct boundary connection between Unity and the Pi.
 /// </summary>
 public class RemotePi {
+    public RemoteState state { get; private set; }
     public Socket socket { get; private set; }
-    public string ip { get; private set; }
+    IPAddress ipAddress;
+    public string ip { 
+        get { return ipAddress.ToString(); } 
+    }
 
     // Create a RemotePi with the given IP
     public RemotePi (string ipString) {
+        state = RemoteState.Unassigned;
         // Initialise a UDP socket with which to connect this Remote.
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        IPAddress ip = IPAddress.Parse(ipString);
-        socket.Connect(ip, RemoteNetHandler.Port);
+        ipAddress = IPAddress.Parse(ipString);
+        socket.Connect(ipAddress, RemoteNetHandler.Port);
         RemoteNetHandler.NewRemote(this);
+    }
+
+    public void Assigned (RemoteObject remoteObject = null) {
+        state = RemoteState.Assigned;
     }
 
     public void SendNetMessage(string message) {
