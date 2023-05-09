@@ -18,6 +18,7 @@ public class RemoteObject : MonoBehaviour
     // remotes will need to be identified
     [SerializeField] string debugIPAddress;
     [SerializeField] public string remoteName;
+    [SerializeField] public Sprite remoteIcon;
 
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
