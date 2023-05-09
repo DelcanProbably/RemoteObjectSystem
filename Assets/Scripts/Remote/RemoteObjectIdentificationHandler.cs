@@ -26,9 +26,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         }
     }
 
-    RemoteObjectIdentificationUIItem CreateUIItem (string remoteName) {
-        GameObject newItem = Instantiate(identificationUIItemPrefab, identificationUIPanel);
-        RemoteObjectIdentificationUIItem item = newItem.GetComponent<RemoteObjectIdentificationUIItem>();
+    RemoteObjectIdentificationUIItem CreateUIItem (RemoteObject remote) {
+        GameObject itemObject = Instantiate(identificationUIItemPrefab, identificationUIPanel);
+        RemoteObjectIdentificationUIItem item = itemObject.GetComponent<RemoteObjectIdentificationUIItem>();
+        item.Initialise(this, remote);
         return item;
     }
 
@@ -38,7 +39,8 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         ClearUI();
         List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
         foreach (RemoteObject remote in remotes) {
-            items.Add(CreateUIItem(remote.gameObject.name));
+            RemoteObjectIdentificationUIItem item = CreateUIItem(remote);
+            items.Add(item);
         }
 
         foreach (RemoteObjectIdentificationUIItem item in items) {
@@ -48,6 +50,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         currentIp = 0;
 
         // for each IP - send identify message, ask player to select the relevant object.
+        
 
         // hide UI
     }

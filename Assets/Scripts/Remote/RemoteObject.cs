@@ -17,6 +17,7 @@ public class RemoteObject : MonoBehaviour
     // TODO: Eventually this should be handled at runtime as unique
     // remotes will need to be identified
     [SerializeField] string debugIPAddress;
+    [SerializeField] public string remoteName;
 
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
@@ -24,6 +25,11 @@ public class RemoteObject : MonoBehaviour
             remote = new RemotePi(debugIPAddress);
         }
         RemoteManager.RegisterRemote(this);
+        
+        // If the remoteName hasn't been set, we'll set it to the gameObject name.
+        if (remoteName == "") {
+            remoteName = name;
+        }
     }
 
 
