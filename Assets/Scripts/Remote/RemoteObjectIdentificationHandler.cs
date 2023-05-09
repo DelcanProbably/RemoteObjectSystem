@@ -20,14 +20,29 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.F9)) StartIdentificationFlow(RemoteManager.GetRemotes(), ipAddresses);
     }
 
-    void CreateUIItem (string remoteName) {
+    void ClearUI () {
+        foreach(Transform t in identificationUIPanel) {
+            Destroy(t.gameObject);
+        }
+    }
+
+    RemoteObjectIdentificationUIItem CreateUIItem (string remoteName) {
         GameObject newItem = Instantiate(identificationUIItemPrefab, identificationUIPanel);
+        RemoteObjectIdentificationUIItem item = newItem.GetComponent<RemoteObjectIdentificationUIItem>();
+        return item;
     }
 
     public void StartIdentificationFlow(List<RemoteObject> remotes, List<string> ips) {
+        
         // UI - generate and show
+        ClearUI();
+        List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
         foreach (RemoteObject remote in remotes) {
-            CreateUIItem(remote.gameObject.name);
+            items.Add(CreateUIItem(remote.gameObject.name));
+        }
+
+        foreach (RemoteObjectIdentificationUIItem item in items) {
+            Debug.Log(item.name);
         }
 
         currentIp = 0;
