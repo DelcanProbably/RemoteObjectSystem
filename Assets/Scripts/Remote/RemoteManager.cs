@@ -2,8 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class RemoteManager : MonoBehaviour {
     
+    public static string localIP;
+
     static RemoteManager Instance;
     static Coroutine poker;
 
@@ -17,9 +20,26 @@ public class RemoteManager : MonoBehaviour {
     // Seconds between "pokes"
     [SerializeField] float pokeInterval = 0.2f; 
 
+    [SerializeField] bool debugKeysEnabled;
+    public static bool DebugKeysEnabled { 
+        get {
+            return Instance.debugKeysEnabled; 
+        }
+    }
+
     private void Awake() {
         if (Instance) Destroy(gameObject);
         Instance = this;
+        
+        // this bloody bastard gets the local ip address
+        // TODO: there's probably a less scuffed method for this
+        System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+        foreach(System.Net.IPAddress ip in host.AddressList) {
+            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+                Debug.Log(ip + " found as local IP Address");
+                localIP = ip.ToString();
+            }
+        }
     }
 
     private void Start() {

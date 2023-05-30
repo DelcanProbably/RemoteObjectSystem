@@ -1399,6 +1399,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RemoteManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7163239078841800370, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: debugKeysEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7163239078841800371, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
       propertyPath: IPText
       value: 
