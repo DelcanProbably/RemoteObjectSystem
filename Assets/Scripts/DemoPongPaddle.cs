@@ -34,7 +34,8 @@ public class DemoPongPaddle : MonoBehaviour
     }
 
     void FixedUpdate() {
-        rb.velocity = new(0, axis * speed, 0);
+        // rb.velocity = new(0, axis * speed, 0);
+        rb.MovePosition(rb.position + Vector3.up * axis * speed * Time.fixedDeltaTime);
     }
 
     public void Hit () {

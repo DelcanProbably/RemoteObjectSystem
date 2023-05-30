@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using System.Net.NetworkInformation;
 
 public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
@@ -14,6 +16,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] Canvas remoteIdentificationCanvas;
     [SerializeField] RectTransform identificationUIPanel;
     [SerializeField] GameObject identificationUIItemPrefab;
+    [SerializeField] TMP_Text IPText;
 
 
     int currentIp = 0;
@@ -22,6 +25,16 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     private void Start() {
         // Ensure canvas begins disabled
         remoteIdentificationCanvas.enabled = false;
+
+        foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces()) {
+            foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses) {
+                if (ip.IsDnsEligible) {
+                    if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+                        Debug.Log(ip.Address);
+                    }
+                }
+            }
+        }
     }
 
     void Update () {
@@ -80,7 +93,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentIp + "]");
             IdentifyItem(currentRemote.ip);
             float timer = 0; // timer for repeated identification pings.
-            while (currentRemote.state != RemoteState.Assigned) {
+            while (currentRemote.state == RemoteState.Unassigned) {
                 timer += Time.deltaTime;
                 // FIXME: hard-coded identification repeat time
                 if (timer >= 3) {
@@ -89,6 +102,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
                 }
                 if (Input.GetKeyDown(KeyCode.Escape)) {
                     // skip this remote
+                    SkipRemote();
                     break;
                 }
                 yield return null;
@@ -101,10 +115,15 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         FinishIdentificationFlow();
     }
 
+    public void SkipRemote() {
+        currentRemote.SkippedAssignment();
+    }
+
     // Sends ping to identify to given ip
     // 'Identify' - plays test sound, activates test lighting etc. depending on active modules
     void IdentifyItem(string ip) {
         RemoteNetHandler.SendNetMessage(currentRemote, "/id/");
+        IPText.text = ip;
     }
 
     // Called when a remote object/pi pair is confirmed or skipped in identification flow

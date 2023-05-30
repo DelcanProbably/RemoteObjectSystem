@@ -5,6 +5,7 @@ using System.Text;
 
 public enum RemoteState {
     Unassigned,
+    SkippedAssignment,
     Assigned
 }
 
@@ -28,6 +29,10 @@ public class RemotePi {
         ipAddress = IPAddress.Parse(ipString);
         socket.Connect(ipAddress, RemoteNetHandler.Port);
         RemoteNetHandler.NewRemote(this);
+    }
+
+    public void SkippedAssignment() {
+        state = RemoteState.SkippedAssignment;
     }
 
     public void Assigned (RemoteObject remoteObject = null) {
