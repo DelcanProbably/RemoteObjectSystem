@@ -19,6 +19,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] TMP_Text IPText;
 
     [SerializeField] int ipSweepTimeout = 5;
+    [SerializeField] float identifyRepeatRate = 1.0f;
 
     int currentIp = 0;
     RemotePi currentRemote;
@@ -97,7 +98,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         string ipList = "";
         foreach (string s in ips.ToArray()) ipList += s + "  ";
         Debug.Log("Starting flow with IP List: " + ipList);
-        
+        // TODO: confirm these are all actual remotes using a /ping command
         StartIdentificationFlow(RemoteManager.GetRemotes(), ips);
     }
 
@@ -142,10 +143,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             float timer = 0; // timer for repeated identification pings.
             while (currentRemote.state == RemoteState.Unassigned) {
                 timer += Time.deltaTime;
-                // FIXME: hard-coded identification repeat time
-                if (timer >= 3) {
+                // Every few seconds repeat the identification. e.g. sound will play every 2 seconds rather than just once
+                if (timer >= identifyRepeatRate) {
                     IdentifyItem(currentRemote.ip);
-                    timer -= 3;
+                    timer -= identifyRepeatRate;
                 }
                 if (Input.GetKeyDown(KeyCode.Escape)) {
                     // skip this remote
