@@ -46,6 +46,13 @@ public class RemoteManager : MonoBehaviour {
         if (doPoking) StartPoking();
     }
 
+    private void Update() {
+        if (doPoking) {
+            doPoking = false;
+            StartPoking();
+        }
+    }
+
     
     public static void RegisterRemote(RemoteObject remote) {
         Instance.remotes.Add(remote);
