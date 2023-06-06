@@ -42,6 +42,10 @@ public class RemoteObject : MonoBehaviour
 
 
     void SendRawCommand (string command) {
+        if (remote == null) {
+            Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
+            return;
+        }
         // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?
         RemoteNetHandler.SendNetMessage(remote, command);
     }
