@@ -17,6 +17,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] RectTransform identificationUIPanel;
     [SerializeField] GameObject identificationUIItemPrefab;
     [SerializeField] TMP_Text IPText;
+    [SerializeField] GameObject searchingUIObject;
 
     [SerializeField] int ipSweepTimeout = 5;
     [SerializeField] float identifyRepeatRate = 1.0f;
@@ -33,10 +34,14 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     void Update () {
         // DEBUG KEYS
         if (RemoteManager.DebugKeysEnabled) {
-            if (Input.GetKeyDown(KeyCode.F9)) StartIPSweep();
+            if (Input.GetKeyDown(KeyCode.F9)) Begin();
         }
     }
 
+    public void Begin() {
+        remoteIdentificationCanvas.enabled = true;
+        StartIPSweep();
+    }
 
     // Gathering IPs
     void StartIPSweep() {
@@ -55,6 +60,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     }
 
     IEnumerator IPSweep(string ipBase) {
+        // Show UI e.g. Searching...
+        searchingUIObject.SetActive(true);
+
         // Ping every IP from xxx.xxx.xxx.1 to xxx.xxx.xxx.255
         List<Ping> pings = new List<Ping>();
         for (int i = 1; i < 255; i++) {
@@ -94,19 +102,19 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     }
 
     void CompleteIPSweep(List<string> ips) {
-        
+        searchingUIObject.SetActive(false); // TODO: change text to "checking for remotes" or other.
         string ipList = "";
         foreach (string s in ips.ToArray()) ipList += s + "  ";
         Debug.Log("Starting flow with IP List: " + ipList);
         // TODO: confirm these are all actual remotes using a /ping command
-        StartIdentificationFlow(RemoteManager.GetRemotes(), ips);
+        StartLinkingFlow(RemoteManager.GetRemotes(), ips);
     }
 
     // ###########################
     // ID flow (IPs are now KNOWN)
     // ###########################
 
-    void StartIdentificationFlow(List<RemoteObject> remoteObjects, List<string> ips) {
+    void StartLinkingFlow(List<RemoteObject> remoteObjects, List<string> ips) {
         
         // Check state before starting flow.
         if (state == State.Identification) {
@@ -121,7 +129,6 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
         // UI - generate and show
         ClearUI();
-        remoteIdentificationCanvas.enabled = true;
         List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
         foreach (RemoteObject remoteObject in remoteObjects) {
             RemoteObjectIdentificationUIItem item = CreateUIItem(remoteObject);
