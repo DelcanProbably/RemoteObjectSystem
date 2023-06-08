@@ -679,9 +679,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 652988690, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 652988690, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 979797717, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 979797717, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 1241702201, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 1241702201, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
     - target: {fileID: 1533489722549108328, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4530875381060964240, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
+    - target: {fileID: 4530875381060964240, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6466110974992424552, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
       propertyPath: m_AnchorMax.y
