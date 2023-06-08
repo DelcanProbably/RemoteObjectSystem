@@ -12,9 +12,11 @@ public class RemoteAudioSource : RemoteComponent {
     }
 
     public override void ActivateFallback() {
-        fallbackMode = true;
-        
         fallbackAudioSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    public override void DeactivateFallback() {
+        Destroy(fallbackAudioSource);
     }
     
     // Play a sound from the remote device.
@@ -23,6 +25,7 @@ public class RemoteAudioSource : RemoteComponent {
             // If we're in fallback mode, just play the sound through the attached audio source.
             AudioClip clip = sound.clip;
             fallbackAudioSource.PlayOneShot(clip);
+            Debug.Log("playing de sound " + clip + fallbackAudioSource);
             return;
         }
 

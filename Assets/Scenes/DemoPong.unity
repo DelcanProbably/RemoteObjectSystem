@@ -338,7 +338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac1d1c3aa3c13749a6797f8fbd10ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallbackMode: 1
 --- !u!114 &217208036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f91dca3ecf5e6f47b3854d54e0be786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallbackMode: 0
 --- !u!114 &217208037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,9 +362,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugIPAddress: 192.168.43.91
+  debugIPAddress: 
   remoteName: 
   remoteIcon: {fileID: 21300000, guid: 93e6e1dac5ce7c342855735a6ae38d98, type: 3}
+  autoFallbackMode: 1
+  rComponents: []
 --- !u!1 &320994733
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f91dca3ecf5e6f47b3854d54e0be786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallbackMode: 0
 --- !u!114 &320994741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac1d1c3aa3c13749a6797f8fbd10ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallbackMode: 1
 --- !u!114 &320994742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,9 +538,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123d4c16b6941224e833282cf0f61e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugIPAddress: 192.168.43.187
+  debugIPAddress: 
   remoteName: 
   remoteIcon: {fileID: 21300000, guid: e13e9ae61c323fa4b82190ea25de6567, type: 3}
+  autoFallbackMode: 1
+  rComponents: []
 --- !u!1 &1159029188
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,6 +729,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6466110974992424552, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466110974992424552, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6466110974992424552, guid: cacfcc1b0bead3d46bd90e9c20cdacdf, type: 3}

@@ -13,13 +13,15 @@ public abstract class RemoteComponent : MonoBehaviour {
     // The RemoteObject this component is attached to.
     protected RemoteObject remote;
     // If true, will fallback to emulating the intended result through the local system.
-    [SerializeField] protected bool fallbackMode;
+    protected bool fallbackMode {get {
+        return remote.fallbackMode;
+    }}
     
     private void Awake() {
         remote = GetComponent<RemoteObject>();
-        if (fallbackMode) {
-            ActivateFallback();
-        }
+        // Add this components to remote's component list
+        // This could probably be turned into a function to avoid the public list
+        remote.rComponents.Add(this);
         RemoteComponentAwake();
     }
     // Run in Awake after RemoteComponent parent setup.
@@ -27,6 +29,10 @@ public abstract class RemoteComponent : MonoBehaviour {
 
     public virtual void ActivateFallback() {
         Debug.LogWarning(name + " - fallback mode has been activated on a RemoteComponent but there is no implementation.");
+    }
+
+    public virtual void DeactivateFallback() {
+        Debug.LogWarning(name + " - fallback mode has been deactivated on a RemoteComponent but there is no implementation.");
     }
 
     // TODO: bit redundant innit - rewrite RemoteArgs system to get rid of this shenanigans

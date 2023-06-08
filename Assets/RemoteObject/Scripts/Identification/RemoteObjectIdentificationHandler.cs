@@ -131,6 +131,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         ClearUI();
         List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
         foreach (RemoteObject remoteObject in remoteObjects) {
+            // Clear current remotepi.
+            remoteObject.ResetRemote();
+
+            // Create UI item for this object
             RemoteObjectIdentificationUIItem item = CreateUIItem(remoteObject);
             items.Add(item);
         }
@@ -189,6 +193,12 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     // Run once IdentificationCoroutine complete
     void FinishIdentificationFlow() {
         Debug.Log("Identification Complete");
+
+        // Loop through each RemoteObject and update its fallbackmode.
+        foreach (RemoteObject r in RemoteManager.GetRemotes()) {
+            r.UpdateFallbackMode();
+        }
+
         remoteIdentificationCanvas.enabled = false;
         state = State.Idle;
     }

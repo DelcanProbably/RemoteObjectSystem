@@ -20,6 +20,12 @@ public class RemoteObject : MonoBehaviour
     [SerializeField] public string remoteName;
     [SerializeField] public Sprite remoteIcon;
 
+    // Automatically activate fallback mode if no device is assigned.
+    [SerializeField] bool autoFallbackMode = true;
+    public bool fallbackMode {get; private set;}
+
+    public List<RemoteComponent> rComponents = new List<RemoteComponent>();
+
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
         if (debugIPAddress != "") {
@@ -68,6 +74,23 @@ public class RemoteObject : MonoBehaviour
 
     public void SendCommand (string module, string func, RemoteAsset assetRef) {
         SendCommand(module, func, assetRef.AsArgs());
+    }
+
+    // Updates fallback mode dependant on if a Remote is assigned, but only if autoFallbackMode is enabled
+    public void UpdateFallbackMode() {
+        if (autoFallbackMode) {
+            fallbackMode = remote == null; // i hate this
+        }   
+
+        foreach (RemoteComponent component in rComponents) {
+            if (fallbackMode) component.ActivateFallback();
+            else component.DeactivateFallback();
+        }
+    }
+
+    // Resets this object's remote link.
+    public void ResetRemote() {
+        remote = null;
     }
 
 }
