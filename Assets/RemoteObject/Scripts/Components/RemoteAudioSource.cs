@@ -6,6 +6,8 @@ using UnityEngine;
 public class RemoteAudioSource : RemoteComponent {
 
     AudioSource fallbackAudioSource;
+    // The overall source's last set volume.
+    public float volume {get; private set;}
 
     protected override void RemoteComponentAwake() {
         moduleName = "audio";
@@ -33,6 +35,7 @@ public class RemoteAudioSource : RemoteComponent {
 
     // Sets the volume to f (0.0 - 1.0)
     public void SetVolume (float f) {
+        volume = f;
         if (fallbackMode) {
             fallbackAudioSource.volume = f;
         } else {
