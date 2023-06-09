@@ -25,11 +25,19 @@ public class RemoteAudioSource : RemoteComponent {
             // If we're in fallback mode, just play the sound through the attached audio source.
             AudioClip clip = sound.clip;
             fallbackAudioSource.PlayOneShot(clip);
-            Debug.Log("playing de sound " + clip + fallbackAudioSource);
             return;
         }
 
         SendCommand("play", sound);
+    }
+
+    // Sets the volume to f (0.0 - 1.0)
+    public void SetVolume (float f) {
+        if (fallbackMode) {
+            fallbackAudioSource.volume = f;
+        } else {
+            SendCommand("volume", new string[] {f.ToString()});
+        }
     }
 
     public void SetAudioConfig(RemoteAudioConfig config) {
