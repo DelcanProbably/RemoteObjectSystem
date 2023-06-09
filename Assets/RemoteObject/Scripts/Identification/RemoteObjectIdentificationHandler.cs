@@ -25,9 +25,12 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     int currentIp = 0;
     RemotePi currentRemote;
 
+    [SerializeField] bool searchOnStart;
+
     private void Start() {
         // Ensure canvas begins disabled
         remoteIdentificationCanvas.enabled = false;
+        if (searchOnStart) Begin();
 
     }
 
