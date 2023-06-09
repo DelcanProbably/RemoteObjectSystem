@@ -252,5 +252,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     }
 
 
+    public bool IsBusy() {
+        return state != State.Idle;
+    }
+
+
 
 }
