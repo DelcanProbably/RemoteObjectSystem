@@ -26,6 +26,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     RemotePi currentRemote;
 
     [SerializeField] bool searchOnStart;
+    [SerializeField] bool pauseTimescaleDuringUI;
 
     private void Start() {
         // Ensure canvas begins disabled
@@ -43,6 +44,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     public void Begin() {
         remoteIdentificationCanvas.enabled = true;
+        if (pauseTimescaleDuringUI) {
+            Time.timeScale = 0;
+        }
         StartIPSweep();
     }
 
@@ -79,7 +83,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
         // Because we can't know how many remotes there are on the network, we always run for the whole timeout time.
         for (int secs = 0; secs < ipSweepTimeout; secs++) {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
 
             // We will delete seen pings, this Stack will handle that
             Stack<int> seen = new();
@@ -156,7 +160,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             IdentifyItem(currentRemote.ip);
             float timer = 0; // timer for repeated identification pings.
             while (currentRemote.state == RemoteState.Unassigned) {
-                timer += Time.deltaTime;
+                timer += Time.unscaledDeltaTime;
                 // Every few seconds repeat the identification. e.g. sound will play every 2 seconds rather than just once
                 if (timer >= identifyRepeatRate) {
                     IdentifyItem(currentRemote.ip);
@@ -203,6 +207,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         }
 
         remoteIdentificationCanvas.enabled = false;
+        // ISSUE: this could have issues if pause is toggled during the flow or if time should return to anything other than 1.0
+        if (pauseTimescaleDuringUI) {
+            Time.timeScale = 1;
+        }
         state = State.Idle;
     }
 
