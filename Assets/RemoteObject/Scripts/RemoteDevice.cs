@@ -13,7 +13,7 @@ public enum RemoteState {
 /// A RemotePi is a direct network connection to a remote.
 /// This is the direct boundary connection between Unity and the Pi.
 /// </summary>
-public class RemotePi {
+public class RemoteDevice {
     public RemoteState state { get; private set; }
     public Socket socket { get; private set; }
     IPAddress ipAddress;
@@ -22,7 +22,7 @@ public class RemotePi {
     }
 
     // Create a RemotePi with the given IP
-    public RemotePi (string ipString) {
+    public RemoteDevice (string ipString) {
         state = RemoteState.Unassigned;
         // Initialise a UDP socket with which to connect this Remote.
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -30,15 +30,7 @@ public class RemotePi {
         socket.Connect(ipAddress, RemoteNetHandler.Port);
         RemoteNetHandler.NewRemote(this);
     }
-
-    public void SkippedAssignment() {
-        state = RemoteState.SkippedAssignment;
-    }
-
-    public void Assigned (RemoteObject remoteObject = null) {
-        state = RemoteState.Assigned;
-    }
-
+    
     public void SendNetMessage(string message) {
         if (socket == null) {
             Debug.LogError("Error: socket " + ip + " does not exist.");
@@ -52,4 +44,13 @@ public class RemotePi {
         encodedMessage = Encoding.UTF8.GetBytes(message);
         socket.Send(encodedMessage);
     }
+
+    public void SkippedAssignment() {
+        state = RemoteState.SkippedAssignment;
+    }
+
+    public void Assigned (RemoteObject remoteObject = null) {
+        state = RemoteState.Assigned;
+    }
+
 }

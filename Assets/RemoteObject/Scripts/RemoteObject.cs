@@ -13,7 +13,7 @@ public class RemoteObject : MonoBehaviour
 {
 
     // The device this object is linked with.
-    public RemotePi remote;
+    public RemoteDevice remote;
     // Fallback mode allows properly configured components to continue running locally if no RemoteDevice is linked. See documentation for more information.
     public bool fallbackMode {get; private set;}
     // List of attached Remote Components
@@ -32,7 +32,7 @@ public class RemoteObject : MonoBehaviour
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
         if (debugIPAddress != "") {
-            remote = new RemotePi(debugIPAddress);
+            remote = new RemoteDevice(debugIPAddress);
         }
         RemoteManager.RegisterRemote(this);
         

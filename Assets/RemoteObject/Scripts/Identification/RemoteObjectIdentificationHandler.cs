@@ -23,7 +23,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] float identifyRepeatRate = 1.0f;
 
     int currentIp = 0;
-    RemotePi currentRemote;
+    RemoteDevice currentRemote;
 
     [SerializeField] bool searchOnStart;
     [SerializeField] bool pauseTimescaleDuringUI;
@@ -154,7 +154,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     IEnumerator IdentificationCoroutine() {
         
-        RemotePi currentRemote = NextRemote();
+        RemoteDevice currentRemote = NextRemote();
         while (currentRemote != null) {
             Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentIp + "]");
             IdentifyItem(currentRemote.ip);
@@ -183,7 +183,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     // Called when a remote object/pi pair is confirmed or skipped in identification flow
     // Retrieves the next Remote device that needs pairing
-    RemotePi NextRemote () {
+    RemoteDevice NextRemote () {
         currentIp++;
 
         // Have gone through all remtoes, return null.
@@ -193,7 +193,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         }
 
         // Get the next remote and return it.
-        currentRemote = new RemotePi(ipAddresses[currentIp]);
+        currentRemote = new RemoteDevice(ipAddresses[currentIp]);
         return currentRemote;
     }
 
