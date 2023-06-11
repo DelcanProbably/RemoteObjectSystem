@@ -14,8 +14,6 @@ public class RemoteObject : MonoBehaviour
 
     public RemotePi remote;
     // If set, this a RemotePi will be created with the given IP
-    // TODO: Eventually this should be handled at runtime as unique
-    // remotes will need to be identified
     [SerializeField] string debugIPAddress;
     [SerializeField] public string remoteName;
     [SerializeField] public Sprite remoteIcon;
