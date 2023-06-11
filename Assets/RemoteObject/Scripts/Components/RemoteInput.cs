@@ -20,7 +20,7 @@ public class RemoteInput : RemoteComponent
     }
 
     void SetupSocket () {
-        socket = remote.remote.socket;
+        socket = remoteObject.remote.socket;
         socket.Blocking = false;
         string ip = ((IPEndPoint)socket.LocalEndPoint).Address.ToString();
         SendCommand("init", ip);
