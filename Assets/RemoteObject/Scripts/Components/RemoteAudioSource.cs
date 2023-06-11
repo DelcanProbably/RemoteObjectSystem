@@ -30,7 +30,7 @@ public class RemoteAudioSource : RemoteComponent {
             return;
         }
 
-        SendCommand("play", sound);
+        SendCommand("play", sound.AsArgs());
     }
 
     // Sets the volume to f (0.0 - 1.0)
@@ -39,7 +39,7 @@ public class RemoteAudioSource : RemoteComponent {
         if (fallbackMode) {
             fallbackAudioSource.volume = f;
         } else {
-            SendCommand("volume", new string[] {f.ToString()});
+            SendCommand("volume", f.ToString());
         }
     }
 

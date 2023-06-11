@@ -23,7 +23,7 @@ public class RemoteInput : RemoteComponent
         socket = remote.remote.socket;
         socket.Blocking = false;
         string ip = ((IPEndPoint)socket.LocalEndPoint).Address.ToString();
-        SendCommand("init", new string[] { ip } ); // TODO RemoteArgs exists for a reason
+        SendCommand("init", ip);
     }
 
     private void Update() {

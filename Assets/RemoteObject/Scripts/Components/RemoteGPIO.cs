@@ -11,7 +11,7 @@ public class RemoteGPIO : RemoteComponent
     }
 
     public void SetOutputPin(int pin, string mode) {
-        SendCommand("setpin", new string[] { mode }); // TODO: this whole args thing is getting out of hand.
+        SendCommand("setpin", mode);
     }
 
 }

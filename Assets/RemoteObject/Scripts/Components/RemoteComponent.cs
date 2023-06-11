@@ -35,7 +35,6 @@ public abstract class RemoteComponent : MonoBehaviour {
         Debug.LogWarning(name + " - fallback mode has been deactivated on a RemoteComponent but there is no implementation.");
     }
 
-    // TODO: bit redundant innit - rewrite RemoteArgs system to get rid of this shenanigans
     protected void SendCommand(string func, string[] args) {
 
         if (fallbackMode) {
@@ -46,10 +45,8 @@ public abstract class RemoteComponent : MonoBehaviour {
         // Not sure what the perfect implementation of this kind of system is.
         remote.SendCommand(moduleKeyword, func, args);
     }
-    protected void SendCommand(string func, RemoteAsset remoteAsset) {
-        SendCommand(func, remoteAsset.AsArgs());
-    }
-    protected void SendCommand(string func, RemoteArgs remoteArgs) {
-        SendCommand(func, remoteArgs.AsArgs());
+
+    protected void SendCommand(string func, string arg) {
+        SendCommand(func, new string[] {arg});
     }
 }
