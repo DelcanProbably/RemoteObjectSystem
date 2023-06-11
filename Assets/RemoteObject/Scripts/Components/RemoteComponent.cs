@@ -11,17 +11,17 @@ public abstract class RemoteComponent : MonoBehaviour {
     // The base command for this module. MUST be set by child classes.
     protected string moduleKeyword;
     // The RemoteObject this component is attached to.
-    protected RemoteObject remote;
+    protected RemoteObject remoteObject;
     // If true, will fallback to emulating the intended result through the local system.
     protected bool fallbackMode {get {
-        return remote.fallbackMode;
+        return remoteObject.fallbackMode;
     }}
     
     private void Awake() {
-        remote = GetComponent<RemoteObject>();
+        remoteObject = GetComponent<RemoteObject>();
         // Add this components to remote's component list
         // This could probably be turned into a function to avoid the public list
-        remote.rComponents.Add(this);
+        remoteObject.rComponents.Add(this);
         RemoteComponentAwake();
     }
     // Run in Awake after RemoteComponent parent setup.
@@ -43,7 +43,7 @@ public abstract class RemoteComponent : MonoBehaviour {
 
         // this isn't perfect, but it will work fine.
         // Not sure what the perfect implementation of this kind of system is.
-        remote.SendCommand(moduleKeyword, func, args);
+        remoteObject.SendCommand(moduleKeyword, func, args);
     }
 
     protected void SendCommand(string func, string arg) {
