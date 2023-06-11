@@ -39,14 +39,6 @@ public class RemoteObject : MonoBehaviour
         }
     }
 
-    #if UNITY_EDITOR
-    private void Update() {
-        // Debug log info dump when f10 booped
-        if (Input.GetKeyDown(KeyCode.F10)) Debug.Log(remoteName + ", ip: " + remote.ip);
-    }
-    #endif
-
-
     void SendRawCommand (string command) {
         if (remote == null) {
             Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
