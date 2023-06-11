@@ -12,17 +12,22 @@ using System.Net;
 public class RemoteObject : MonoBehaviour
 {
 
+    // The device this object is linked with.
     public RemotePi remote;
-    // If set, this a RemotePi will be created with the given IP
-    [SerializeField] string debugIPAddress;
-    [SerializeField] public string remoteName;
-    [SerializeField] public Sprite remoteIcon;
+    // Fallback mode allows properly configured components to continue running locally if no RemoteDevice is linked. See documentation for more information.
+    public bool fallbackMode {get; private set;}
+    // List of attached Remote Components
+    [HideInInspector] public List<RemoteComponent> rComponents = new List<RemoteComponent>();
 
     // Automatically activate fallback mode if no device is assigned.
     [SerializeField] bool autoFallbackMode = true;
-    public bool fallbackMode {get; private set;}
+    // If set in Awake, this a RemotePi will be created with the given IP
+    [SerializeField] string debugIPAddress;
+    // The name of this RemoteObject to be displayed to the user.
+    [SerializeField] public string remoteName;
+    // An icon for this RemoteObject to be displayed to the user.
+    [SerializeField] public Sprite remoteIcon;
 
-    public List<RemoteComponent> rComponents = new List<RemoteComponent>();
 
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
@@ -37,16 +42,7 @@ public class RemoteObject : MonoBehaviour
         }
     }
 
-    public void SendRawCommand (string command) {
-        if (remote == null) {
-            Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
-            return;
-        }
-        // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?
-        RemoteNetHandler.SendNetMessage(remote, command);
-    }
-
-    // Send da command
+    // Send a command
     public void SendCommand(string module, string func, string[] args) {
         string command = "/";
         command += module + "/" + func;
@@ -54,6 +50,15 @@ public class RemoteObject : MonoBehaviour
             command += "/" + s;
         }
         SendRawCommand(command);
+    }
+
+    public void SendRawCommand (string command) {
+        if (remote == null) {
+            Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
+            return;
+        }
+        // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?
+        RemoteNetHandler.SendNetMessage(remote, command);
     }
 
     // Updates fallback mode dependant on if a Remote is assigned, but only if autoFallbackMode is enabled
