@@ -10,7 +10,7 @@ public class RemoteAudioSource : RemoteComponent {
     public float volume {get; private set;}
 
     protected override void RemoteComponentAwake() {
-        moduleName = "audio";
+        moduleKeyword = "audio";
     }
 
     public override void ActivateFallback() {

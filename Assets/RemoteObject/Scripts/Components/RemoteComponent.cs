@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(RemoteObject))]
 public abstract class RemoteComponent : MonoBehaviour {
-    // The name of this module. MUST be set by child classes.
-    protected string moduleName;
+    // The base command for this module. MUST be set by child classes.
+    protected string moduleKeyword;
     // The RemoteObject this component is attached to.
     protected RemoteObject remote;
     // If true, will fallback to emulating the intended result through the local system.
@@ -44,7 +44,7 @@ public abstract class RemoteComponent : MonoBehaviour {
 
         // this isn't perfect, but it will work fine.
         // Not sure what the perfect implementation of this kind of system is.
-        remote.SendCommand(moduleName, func, args);
+        remote.SendCommand(moduleKeyword, func, args);
     }
     protected void SendCommand(string func, RemoteAsset remoteAsset) {
         SendCommand(func, remoteAsset.AsArgs());

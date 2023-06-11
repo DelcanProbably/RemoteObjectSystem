@@ -12,7 +12,7 @@ public class RemoteInput : RemoteComponent
 {
     Socket socket;
     protected override void RemoteComponentAwake() {
-        moduleName = "input";
+        moduleKeyword = "input";
     }
 
     void Start() {

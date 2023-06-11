@@ -7,7 +7,7 @@ public class RemoteGPIO : RemoteComponent
 {
 
     protected override void RemoteComponentAwake() {
-        moduleName = "gpio";
+        moduleKeyword = "gpio";
     }
 
     public void SetOutputPin(int pin, string mode) {
