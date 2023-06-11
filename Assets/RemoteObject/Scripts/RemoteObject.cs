@@ -37,7 +37,7 @@ public class RemoteObject : MonoBehaviour
         }
     }
 
-    void SendRawCommand (string command) {
+    public void SendRawCommand (string command) {
         if (remote == null) {
             Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
             return;
@@ -54,16 +54,6 @@ public class RemoteObject : MonoBehaviour
             command += "/" + s;
         }
         SendRawCommand(command);
-    }
-
-    // TODO: this gets a bit redundant...
-    // Send a command from the given module with the given args
-    public void SendCommand (string module, string func, RemoteArgs args) {
-        SendCommand(module, func, args.AsArgs());
-    }
-
-    public void SendCommand (string module, string func, RemoteAsset assetRef) {
-        SendCommand(module, func, assetRef.AsArgs());
     }
 
     // Updates fallback mode dependant on if a Remote is assigned, but only if autoFallbackMode is enabled
