@@ -22,15 +22,15 @@ public class RemoteAudioSource : RemoteComponent {
     }
     
     // Play a sound from the remote device.
-    public void Play (RemoteSound sound) {
+    public void Play (RemoteAudioClip clip) {
         if (fallbackMode) {
             // If we're in fallback mode, just play the sound through the attached audio source.
-            AudioClip clip = sound.clip;
-            fallbackAudioSource.PlayOneShot(clip);
+            AudioClip localClip = clip.localClip;
+            fallbackAudioSource.PlayOneShot(localClip);
             return;
         }
 
-        SendCommand("play", sound.AsArgs());
+        SendCommand("play", clip.AsArgs());
     }
 
     // Sets the volume to f (0.0 - 1.0)
