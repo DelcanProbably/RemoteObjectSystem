@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestKeyPlayAudioThing : MonoBehaviour
 {
-    [SerializeField] RemoteSound remoteSound;
+    [SerializeField] RemoteAudioClip remoteSound;
     [SerializeField] RemoteAudioSource audioSource;    
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) { 

@@ -13,7 +13,7 @@ public class DemoPongPaddle : MonoBehaviour
     [SerializeField] float speed;
 
     RemoteAudioSource remoteAudioSource;
-    [SerializeField] RemoteSound hitSound;
+    [SerializeField] RemoteAudioClip hitSound;
     RemoteGPIO remoteGPIO;
     [SerializeField] int LEDPin;
 
