@@ -13,7 +13,7 @@ public class RemoteObject : MonoBehaviour
 {
 
     // The device this object is linked with.
-    public RemoteDevice remote;
+    public RemoteDevice device;
     // Fallback mode allows properly configured components to continue running locally if no RemoteDevice is linked. See documentation for more information.
     public bool fallbackMode {get; private set;}
     // List of attached Remote Components
@@ -32,7 +32,7 @@ public class RemoteObject : MonoBehaviour
     private void Awake() {
         // If the debug IP is set then we'll establish that connection.
         if (debugIPAddress != "") {
-            remote = new RemoteDevice(debugIPAddress);
+            device = new RemoteDevice(debugIPAddress);
         }
         RemoteManager.RegisterRemote(this);
         
@@ -53,18 +53,18 @@ public class RemoteObject : MonoBehaviour
     }
 
     public void SendRawCommand (string command) {
-        if (remote == null) {
+        if (device == null) {
             Debug.Log("SendRawCommand called on RemoteObject with no linked remote. Ignoring.");
             return;
         }
         // TODO: why go through NetHandler instead of just directly calling the RemotePi??? idk?
-        RemoteNetHandler.SendNetMessage(remote, command);
+        RemoteNetHandler.SendNetMessage(device, command);
     }
 
     // Updates fallback mode dependant on if a Remote is assigned, but only if autoFallbackMode is enabled
     public void UpdateFallbackMode() {
         if (autoFallbackMode) {
-            fallbackMode = remote == null; // i hate this
+            fallbackMode = device == null; // i hate this
         }   
 
         foreach (RemoteComponent component in rComponents) {
@@ -75,7 +75,7 @@ public class RemoteObject : MonoBehaviour
 
     // Resets this object's remote link.
     public void ResetRemote() {
-        remote = null;
+        device = null;
     }
 
 }

@@ -242,7 +242,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     // Called when a RemoteObjectIdentificationUIItem's button is pressed.
     public void ItemSelected (RemoteObject remoteObject, RemoteObjectIdentificationUIItem ui) {
-        remoteObject.remote = currentRemote;
+        remoteObject.device = currentRemote;
         currentRemote.Assigned();
     }
 
