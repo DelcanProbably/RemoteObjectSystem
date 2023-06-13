@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69bf3e26ac51e6d42acdba2d4bd9820b, type: 3}
   m_Name: TestBeep
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 03b259774c6280d4eadd4e0569764eab, type: 3}
+  localClip: {fileID: 8300000, guid: 03b259774c6280d4eadd4e0569764eab, type: 3}
   clipName: confirm_style_5_005
