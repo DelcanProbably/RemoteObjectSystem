@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(RemoteAudioSource), typeof(RemoteGPIO))]
+[RequireComponent(typeof(RemoteAudioSource), typeof(RemoteArduino))]
 public class DemoPongPaddle : MonoBehaviour
 {
     Rigidbody rb;
@@ -14,13 +14,17 @@ public class DemoPongPaddle : MonoBehaviour
 
     RemoteAudioSource remoteAudioSource;
     [SerializeField] RemoteAudioClip hitSound;
-    RemoteGPIO remoteGPIO;
+    RemoteArduino remoteArduino;
     [SerializeField] int LEDPin;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
         remoteAudioSource = GetComponent<RemoteAudioSource>();
-        remoteGPIO = GetComponent<RemoteGPIO>();
+        remoteArduino = GetComponent<RemoteArduino>();
+    }
+
+    private void Start() {
+        remoteArduino.SetPinMode(LEDPin, RemoteArduino.PinMode.Output);
     }
 
     private void Update() {
@@ -44,8 +48,8 @@ public class DemoPongPaddle : MonoBehaviour
     }
 
     IEnumerator Blink () {
-        remoteGPIO.SetOutputPin(LEDPin, "high");
+        remoteArduino.DigitalWrite(LEDPin, 1);
         yield return new WaitForSeconds(0.5f);
-        remoteGPIO.SetOutputPin(LEDPin, "low");
+        remoteArduino.DigitalWrite(LEDPin, 0);
     }
 }
