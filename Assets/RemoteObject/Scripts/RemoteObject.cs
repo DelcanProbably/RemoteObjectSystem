@@ -78,4 +78,11 @@ public class RemoteObject : MonoBehaviour
         device = null;
     }
 
+    public void UpdateLinkedDevice(RemoteDevice newDevice) {
+        device = newDevice;
+        foreach(RemoteComponent rc in rComponents) {
+            rc.OnLinkUpdated();
+        }
+    }
+
 }

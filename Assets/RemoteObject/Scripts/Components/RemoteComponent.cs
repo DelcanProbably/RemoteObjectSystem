@@ -27,6 +27,8 @@ public abstract class RemoteComponent : MonoBehaviour {
     // Run in Awake after RemoteComponent parent setup.
     protected abstract void RemoteComponentAwake();
 
+    public virtual void OnLinkUpdated() {}
+
     public virtual void ActivateFallback() {
         Debug.LogWarning(name + " - fallback mode has been activated on a RemoteComponent but there is no implementation.");
     }
