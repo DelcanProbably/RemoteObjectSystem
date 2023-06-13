@@ -24,7 +24,6 @@ public class DemoPongPaddle : MonoBehaviour
     }
 
     private void Start() {
-        remoteArduino.SetPinMode(LEDPin, RemoteArduino.PinMode.Output);
     }
 
     private void Update() {
@@ -34,6 +33,9 @@ public class DemoPongPaddle : MonoBehaviour
         }
         if (Input.GetKey(down)) {
             axis -= 1;
+        }
+        if (Input.GetKeyDown(KeyCode.F11)) {
+            OnLinkedDeviceUpdated();
         }
     }
 
@@ -47,9 +49,13 @@ public class DemoPongPaddle : MonoBehaviour
         StartCoroutine(Blink());
     }
 
+    public void OnLinkedDeviceUpdated() {
+        remoteArduino.SetPinMode(LEDPin, RemoteArduino.PinMode.Output);        
+    }
+
     IEnumerator Blink () {
         remoteArduino.DigitalWrite(LEDPin, 1);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2);
         remoteArduino.DigitalWrite(LEDPin, 0);
     }
 }

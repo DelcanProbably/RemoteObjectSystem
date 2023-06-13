@@ -353,8 +353,23 @@ MonoBehaviour:
   rComponents: []
   autoFallbackMode: 1
   debugIPAddress: 
-  remoteName: 
-  remoteIcon: {fileID: 21300000, guid: 93e6e1dac5ce7c342855735a6ae38d98, type: 3}
+  remoteName: Left Paddle
+  remoteIcon: {fileID: 21300000, guid: 861e2c00482c11f40a7941105cd75b06, type: 3}
+  linkedDeviceUpdateEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 217208029}
+        m_TargetAssemblyTypeName: DemoPongPaddle, Assembly-CSharp
+        m_MethodName: OnLinkedDeviceUpdated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &217208038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,8 +544,23 @@ MonoBehaviour:
   rComponents: []
   autoFallbackMode: 1
   debugIPAddress: 
-  remoteName: 
-  remoteIcon: {fileID: 21300000, guid: e13e9ae61c323fa4b82190ea25de6567, type: 3}
+  remoteName: Right Paddle
+  remoteIcon: {fileID: 21300000, guid: a058e1f6f56f9cb41beaa7e1092c8bb3, type: 3}
+  linkedDeviceUpdateEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 320994734}
+        m_TargetAssemblyTypeName: DemoPongPaddle, Assembly-CSharp
+        m_MethodName: OnLinkedDeviceUpdated
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &320994743
 MonoBehaviour:
   m_ObjectHideFlags: 0
