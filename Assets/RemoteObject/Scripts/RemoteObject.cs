@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
 using System.Net;
+using UnityEngine.Events;
 
 /// <summary>
 /// A RemoteObject is one that represents a physical remote Raspberry Pi.
@@ -27,6 +28,9 @@ public class RemoteObject : MonoBehaviour
     [SerializeField] public string remoteName;
     // An icon for this RemoteObject to be displayed to the user.
     [SerializeField] public Sprite remoteIcon;
+
+    // Little weird, but has some utility.
+    [SerializeField] UnityEvent linkedDeviceUpdateEvent;
 
 
     private void Awake() {
@@ -80,6 +84,7 @@ public class RemoteObject : MonoBehaviour
 
     public void UpdateLinkedDevice(RemoteDevice newDevice) {
         device = newDevice;
+        linkedDeviceUpdateEvent.Invoke();
         foreach(RemoteComponent rc in rComponents) {
             rc.OnLinkUpdated();
         }
