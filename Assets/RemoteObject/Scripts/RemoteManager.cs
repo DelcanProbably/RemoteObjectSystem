@@ -8,9 +8,8 @@ public class RemoteManager : MonoBehaviour {
     public static string localIP;
 
     static RemoteManager Instance;
-    static Coroutine poker;
 
-    public List<RemoteObject> remotes = new List<RemoteObject>();
+    [HideInInspector] public List<RemoteObject> remotes = new List<RemoteObject>();
 
     // Poking sends a message regularly to keep a connection active.
     // This gets around some issues with inconsistent latency that can occur 
@@ -19,6 +18,8 @@ public class RemoteManager : MonoBehaviour {
     [SerializeField] bool doPoking;
     // Seconds between "pokes"
     [SerializeField] float pokeInterval = 0.2f; 
+    // Is there a poking invoke ongoing?
+    static bool poking;
 
     [SerializeField] bool debugKeysEnabled;
     public static bool DebugKeysEnabled { 
@@ -43,14 +44,24 @@ public class RemoteManager : MonoBehaviour {
     }
 
     private void Start() {
-        if (doPoking) StartPoking();
+        if (doPoking) Poke();
     }
 
     private void Update() {
-        if (doPoking) {
-            doPoking = false;
-            StartPoking();
+        // If there's a deviance between doPoking and poking, we need to fix it.
+        if (doPoking != poking) {
+            if (poking) {
+                // poking true, therefore doPoking false
+                // Disable Poke invokes
+                CancelInvoke("Poke");
+                poking = false;
+            } else {
+                // poking false, therefore doPoking true
+                // Start a poke.
+                Poke();
+            }
         }
+
     }
 
     
@@ -62,27 +73,11 @@ public class RemoteManager : MonoBehaviour {
         return Instance.remotes;
     }
 
-    // See doPoking above
-    // TODO: idk could probs be better as a simple class but it'll do
-    public static void StartPoking() {
-        if (poker != null) {
-            Debug.Log("StartPoking called when already poking.");
-            return;
-        }
-        poker = Instance.StartCoroutine(Poker());
-    }
-
-    public static void StopPoking() {
-        if (poker != null)
-            Instance.StopCoroutine(poker);
-        else
-            Debug.Log("StopPoking called when not poking.");
-    }
-
-    static IEnumerator Poker() {
-        while (true) {
-            yield return new WaitForSeconds(Instance.pokeInterval);
-            RemoteNetHandler.SendToAll("/poke/");
+    private void Poke () {
+        poking = true;
+        RemoteNetHandler.SendToAll("/poke/");
+        if (doPoking) {
+            Invoke("Poke", pokeInterval);
         }
     }
 }

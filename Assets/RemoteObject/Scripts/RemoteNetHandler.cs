@@ -36,4 +36,8 @@ public class RemoteNetHandler {
         rem.SendNetMessage(message);
     }
 
+    public static void RemoveRemote (RemoteDevice rem) {
+        sockets.Remove(rem);
+    }
+
 }

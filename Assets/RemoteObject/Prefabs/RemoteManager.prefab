@@ -1068,8 +1068,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7163239078841800380}
-  - component: {fileID: 7163239078841800371}
   - component: {fileID: 7163239078841800370}
+  - component: {fileID: 7163239078841800371}
   m_Layer: 0
   m_Name: RemoteManager
   m_TagString: Untagged
@@ -1093,6 +1093,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7163239078841800370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163239078841800369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a3f26e82d4f764093ea58708071a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  remotes: []
+  doPoking: 0
+  pokeInterval: 0.2
+  debugKeysEnabled: 1
 --- !u!114 &7163239078841800371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,22 +1129,8 @@ MonoBehaviour:
   searchingUIObject: {fileID: 1533489722549108328}
   ipSweepTimeout: 10
   identifyRepeatRate: 1
---- !u!114 &7163239078841800370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7163239078841800369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a3f26e82d4f764093ea58708071a37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  remotes: []
-  doPoking: 0
-  pokeInterval: 0.2
-  debugKeysEnabled: 1
+  searchOnStart: 0
+  pauseTimescaleDuringUI: 0
 --- !u!1 &7163239079205192785
 GameObject:
   m_ObjectHideFlags: 0

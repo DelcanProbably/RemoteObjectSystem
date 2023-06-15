@@ -47,6 +47,7 @@ public class RemoteDevice {
 
     public void SkippedAssignment() {
         state = RemoteState.SkippedAssignment;
+        RemoteNetHandler.RemoveRemote(this);
     }
 
     public void Assigned (RemoteObject remoteObject = null) {
