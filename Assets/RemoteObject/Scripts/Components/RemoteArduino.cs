@@ -20,6 +20,10 @@ public class RemoteArduino : RemoteComponent
         SendCommand("pinmode", args);
     }
 
+    public void SetAllPinsOutput() {
+        SendCommand("pinmode", new string[0]);
+    }
+
     public void DigitalWrite(int pin, int value) {
         string[] args = { pin.ToString(), value.ToString() };
         SendCommand("dwrite", args);

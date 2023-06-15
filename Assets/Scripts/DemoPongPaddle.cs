@@ -50,7 +50,7 @@ public class DemoPongPaddle : MonoBehaviour
     }
 
     public void OnLinkedDeviceUpdated() {
-        remoteArduino.SetPinMode(LEDPin, RemoteArduino.PinMode.Output);        
+        remoteArduino.SetAllPinsOutput();       
     }
 
     IEnumerator Blink () {
