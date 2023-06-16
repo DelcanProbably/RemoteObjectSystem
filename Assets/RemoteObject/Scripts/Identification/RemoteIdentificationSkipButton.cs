@@ -14,6 +14,13 @@ public class RemoteIdentificationSkipButton : MonoBehaviour
         btn = GetComponent<Button>();
     }
 
+    private void Update() {
+        // In addition to the button calling the skip function, manually call when the Escape key is pressed to skip.
+        if (RemoteManager.DebugKeysEnabled && Input.GetKeyDown(KeyCode.Escape)) {
+            Skip();
+        }
+    }
+
     public void Skip () {
         StartCoroutine(SkipFlow());
     }

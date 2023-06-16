@@ -29,6 +29,8 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] bool searchOnStart;
     [SerializeField] bool pauseTimescaleDuringUI;
 
+    bool skipped = false;
+
     private void Start() {
         // Ensure canvas begins disabled
         remoteIdentificationCanvas.enabled = false;
@@ -40,6 +42,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         // DEBUG KEYS
         if (RemoteManager.DebugKeysEnabled) {
             if (Input.GetKeyDown(KeyCode.F9)) Begin();
+            if (Input.GetKeyDown(KeyCode.Escape)) Skip();
         }
     }
 
@@ -88,6 +91,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         List<string> foundIps = new();
         RemoteIdentificationIPUI.NewSweep();
 
+        // Initialise skipped bool to false.
+        skipped = false;
+
         // Because we can't know how many remotes there are on the network, we always run for the whole timeout time.
         for (int secs = 0; secs < ipSweepTimeout; secs++) {
             yield return new WaitForSecondsRealtime(1);
@@ -108,6 +114,12 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             while (seen.Count > 0) {
                 int i = seen.Pop();
                 pings.RemoveAt(i);
+            }
+
+            // If skip has been called, skip.
+            // Note - up to 1 sec latency, but whatevs.
+            if (skipped) {
+                break;
             }
             
         }
@@ -169,6 +181,10 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentIp + "]");
             IdentifyItem(currentRemote.ip);
             float timer = 0; // timer for repeated identification pings.
+
+            // Ensure skipped is false.
+            skipped = false;
+
             while (currentRemote.state == RemoteState.Unassigned) {
                 timer += Time.unscaledDeltaTime;
                 // Every few seconds repeat the identification. e.g. sound will play every 2 seconds rather than just once
@@ -176,9 +192,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
                     IdentifyItem(currentRemote.ip);
                     timer -= identifyRepeatRate;
                 }
-                if (Input.GetKeyDown(KeyCode.Escape)) {
+                if (skipped) {
                     // skip this remote
-                    SkipRemote();
+                    SkipRemoteIdentification();
                     break;
                 }
                 yield return null;
@@ -266,8 +282,12 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         currentRemote.Assigned();
     }
 
-    // Called by skip button and Escape key.
-    public void SkipRemote() {
+    public void Skip() {
+        skipped = true;
+    }
+
+    // Called when a remote link is skipped.
+    void SkipRemoteIdentification() {
         currentRemote.SkippedAssignment();
     }
 

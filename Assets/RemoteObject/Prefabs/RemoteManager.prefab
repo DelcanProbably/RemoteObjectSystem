@@ -152,7 +152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &652988689
 RectTransform:
   m_ObjectHideFlags: 0
@@ -366,8 +366,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &979797718
 CanvasRenderer:
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Skip Assignment
+  m_text: Skip
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 30c59d65acb87fb4f8577cdfe3a22de1, type: 2}
@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 1692808203}
   - component: {fileID: 1692808206}
   m_Layer: 5
-  m_Name: SkipAssignment
+  m_Name: Skip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -716,7 +716,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 20}
-  m_SizeDelta: {x: 600, y: 80}
+  m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1692808205
 CanvasRenderer:
@@ -802,7 +802,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7163239078841800371}
         m_TargetAssemblyTypeName: RemoteObjectIdentificationHandler, Assembly-CSharp
-        m_MethodName: SkipRemote
+        m_MethodName: Skip
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -896,9 +896,9 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   m_StartCorner: 0
-  m_StartAxis: 0
+  m_StartAxis: 1
   m_CellSize: {x: 400, y: 60}
-  m_Spacing: {x: 0, y: 0}
+  m_Spacing: {x: 0, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &577293021741793498
@@ -1091,10 +1091,10 @@ MonoBehaviour:
   uiObjectPanel: {fileID: 966596975}
   uiObjectPrefab: {fileID: 6466110974558631869, guid: 4923cd666fce1ca40bd456f30758ccb8, type: 3}
   uiHeadingText: {fileID: 1241702201}
-  ipSweepTimeout: 10
+  ipSweepTimeout: 20
   identifyRepeatRate: 1
   searchOnStart: 0
-  pauseTimescaleDuringUI: 0
+  pauseTimescaleDuringUI: 1
 --- !u!1 &7163239079205192785
 GameObject:
   m_ObjectHideFlags: 0
