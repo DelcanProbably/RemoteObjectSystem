@@ -43,8 +43,9 @@ public class RemoteAudioSource : RemoteComponent {
         }
     }
 
-    public void SetAudioConfig(RemoteAudioConfig config) {
-        throw new System.NotImplementedException();
-    }
+    // Not implemented
+    // public void SetAudioConfig(RemoteAudioConfig config) {
+    //     throw new System.NotImplementedException();
+    // }
 
 }
