@@ -89,6 +89,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         List<Ping> pings = new List<Ping>();
         for (int i = 1; i < 255; i++) {
             string ip = ipBase + i.ToString();
+            // Skip this PC's IP
+            if (ip == RemoteManager.localIP) continue;
+            // Send a ping
             Ping ping = new Ping(ip);
             pings.Add(ping);
         }
@@ -236,6 +239,16 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     IEnumerator IdentificationCoroutine() {
         
         RemoteDevice currentRemote = NextRemote();
+
+        // If the currentRemote is null after looking for next remote, then no devices were found.
+        if (currentRemote == null) {
+            // Hide the object panel and update message, then wait 3 seconds before closing.
+            uiObjectPanel.gameObject.SetActive(false);
+            uiHeadingText.text = "Could not find any Remote Devices on the network!";
+            yield return new WaitForSecondsRealtime(3);
+        }
+
+        // This loop will run until there are no more remote devices left on the network.
         while (currentRemote != null) {
             Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentFlowDeviceID + "]");
             IdentifyItem(currentRemote.ip);
@@ -263,6 +276,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             // Get next remote
             currentRemote = NextRemote();
         }
+
         FinishIdentificationFlow();
     }
 
@@ -304,6 +318,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     // ID flow helpers
 
+    // Creates an IP entry in the IP list, returns its UI logic script.
     RemoteIdentificationIPUI CreateIPUI(string ip) {
         GameObject g = Instantiate(uiIpPrefab, uiIpListPanel);
         RemoteIdentificationIPUI ipui = g.GetComponent<RemoteIdentificationIPUI>();
@@ -311,6 +326,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         return ipui;
     }
 
+    // Creates a button on the identification panel for a RemoteObject, returns its UI logic script.
     RemoteObjectIdentificationUIItem CreateObjectUI (RemoteObject remote) {
         GameObject itemObject = Instantiate(uiObjectPrefab, uiObjectPanel);
         RemoteObjectIdentificationUIItem item = itemObject.GetComponent<RemoteObjectIdentificationUIItem>();
@@ -357,7 +373,6 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     public bool IsBusy() {
         return state != State.Idle;
     }
-
 
 
 }
