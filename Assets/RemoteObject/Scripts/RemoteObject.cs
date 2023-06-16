@@ -45,6 +45,10 @@ public class RemoteObject : MonoBehaviour
             remoteName = name;
         }
     }
+    
+    private void Start() {
+        UpdateFallbackMode();
+    }
 
     // Send a command
     public void SendCommand(string module, string func, string[] args) {
