@@ -14,10 +14,11 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] List<RemoteObjectIdentificationUIItem> uiItems = new List<RemoteObjectIdentificationUIItem>();
 
     [SerializeField] Canvas remoteIdentificationCanvas;
-    [SerializeField] RectTransform identificationUIPanel;
-    [SerializeField] GameObject identificationUIItemPrefab;
-    [SerializeField] TMP_Text IPText;
-    [SerializeField] GameObject searchingUIObject;
+    [SerializeField] RectTransform uiIpListPanel;
+    [SerializeField] GameObject uiIpPrefab;
+    [SerializeField] RectTransform uiObjectPanel;
+    [SerializeField] GameObject uiObjectPrefab;
+    [SerializeField] TMP_Text uiHeadingText;
 
     [SerializeField] int ipSweepTimeout = 5;
     [SerializeField] float identifyRepeatRate = 1.0f;
@@ -47,6 +48,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         if (pauseTimescaleDuringUI) {
             Time.timeScale = 0;
         }
+        ClearAllUILists();
         StartIPSweep();
     }
 
@@ -68,7 +70,11 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     IEnumerator IPSweep(string ipBase) {
         // Show UI e.g. Searching...
-        searchingUIObject.SetActive(true);
+        uiHeadingText.text = "Searching local network for IPs...";
+
+        // Ensure UI correctly setup
+        uiObjectPanel.gameObject.SetActive(false);
+        uiIpListPanel.gameObject.SetActive(true);
 
         // Ping every IP from xxx.xxx.xxx.1 to xxx.xxx.xxx.255
         List<Ping> pings = new List<Ping>();
@@ -80,6 +86,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
         // List to store IPs that pong
         List<string> foundIps = new();
+        RemoteIdentificationIPUI.NewSweep();
 
         // Because we can't know how many remotes there are on the network, we always run for the whole timeout time.
         for (int secs = 0; secs < ipSweepTimeout; secs++) {
@@ -92,6 +99,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
                 Ping p = pings[i];
                 if (p.isDone) {
                     Debug.Log("Found IP at " + p.ip.ToString());
+                    CreateIPUI(p.ip.ToString());
                     foundIps.Add(p.ip);
                     seen.Push(i);
                 }
@@ -109,7 +117,6 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     }
 
     void CompleteIPSweep(List<string> ips) {
-        searchingUIObject.SetActive(false); // TODO: change text to "checking for remotes" or other.
         string ipList = "";
         foreach (string s in ips.ToArray()) ipList += s + "  ";
         Debug.Log("Starting flow with IP List: " + ipList);
@@ -130,19 +137,22 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             state = State.Identification;
         }
 
+        // Swap UI panels
+        uiIpListPanel.gameObject.SetActive(false);
+        uiObjectPanel.gameObject.SetActive(true);
+
         // Set global IP Address list to updated list
         // This is done here to make sure that without doubt the IP list has been updated before continuing the flow
         ipAddresses = ips;
 
         // UI - generate and show
-        ClearUI();
         List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
         foreach (RemoteObject remoteObject in remoteObjects) {
             // Clear current remotepi.
             remoteObject.ResetRemote();
 
             // Create UI item for this object
-            RemoteObjectIdentificationUIItem item = CreateUIItem(remoteObject);
+            RemoteObjectIdentificationUIItem item = CreateObjectUI(remoteObject);
             items.Add(item);
         }
 
@@ -216,16 +226,26 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     // ID flow helpers
 
-    RemoteObjectIdentificationUIItem CreateUIItem (RemoteObject remote) {
-        GameObject itemObject = Instantiate(identificationUIItemPrefab, identificationUIPanel);
+    RemoteIdentificationIPUI CreateIPUI(string ip) {
+        GameObject g = Instantiate(uiIpPrefab, uiIpListPanel);
+        RemoteIdentificationIPUI ipui = g.GetComponent<RemoteIdentificationIPUI>();
+        ipui.Initialise(ip);
+        return ipui;
+    }
+
+    RemoteObjectIdentificationUIItem CreateObjectUI (RemoteObject remote) {
+        GameObject itemObject = Instantiate(uiObjectPrefab, uiObjectPanel);
         RemoteObjectIdentificationUIItem item = itemObject.GetComponent<RemoteObjectIdentificationUIItem>();
         item.Initialise(this, remote);
         return item;
     }
 
     // Helper to clear all RemoteObject panels
-    void ClearUI () {
-        foreach(Transform t in identificationUIPanel) {
+    void ClearAllUILists () {
+        foreach(Transform t in uiIpListPanel) {
+            Destroy(t.gameObject);
+        }
+        foreach(Transform t in uiObjectPanel) {
             Destroy(t.gameObject);
         }
     }
@@ -236,7 +256,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     // 'Identify' - plays test sound, activates test lighting etc. depending on active modules
     void IdentifyItem(string ip) {
         RemoteNetHandler.SendNetMessage(currentRemote, "/id/");
-        IPText.text = ip;
+        uiHeadingText.text = ip;
     }
     
 
