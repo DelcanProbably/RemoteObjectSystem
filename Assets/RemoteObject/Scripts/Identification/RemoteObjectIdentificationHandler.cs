@@ -1,7 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Net;
 using TMPro;
+using System.Net.Sockets;
+using System.Text;
+using System;
 
 // TODO: this script is getting chunky
 public class RemoteObjectIdentificationHandler : MonoBehaviour {
@@ -10,7 +14,8 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
     State state = State.Idle;
     
-    List<string> ipAddresses;
+    List<string> pongsReceived = new List<string>();
+    List<RemoteDevice> currentFlowDevices;
     [SerializeField] List<RemoteObjectIdentificationUIItem> uiItems = new List<RemoteObjectIdentificationUIItem>();
 
     [SerializeField] Canvas remoteIdentificationCanvas;
@@ -23,13 +28,14 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     [SerializeField] int ipSweepTimeout = 5;
     [SerializeField] float identifyRepeatRate = 1.0f;
 
-    int currentIp = 0;
+    int currentFlowDeviceID = 0;
     RemoteDevice currentRemote;
 
     [SerializeField] bool searchOnStart;
     [SerializeField] bool pauseTimescaleDuringUI;
 
     bool skipped = false;
+    public bool dontSkipIps;
 
     private void Start() {
         // Ensure canvas begins disabled
@@ -87,12 +93,23 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             pings.Add(ping);
         }
 
+        // # Slash pinging
+        // We've sent a standard network ping, but once we've identified an IP as real, we want to confirm whether it is a remote.
+        // To do this, we'll assume it is, and use a slash command that asks it to return a /pong/ command
+
+        // Construct ping slash message - this is the same for all cases from this host.
+        string pingMessage = "/ping/" + RemoteManager.localIP + "/" + RemoteNetHandler.Port.ToString() + "/";
+
+        // Start checking for pongs
+        StartCoroutine(PongReceiver());
+
         // List to store IPs that pong
-        List<string> foundIps = new();
+        List<RemoteDevice> foundDevices = new();
         RemoteIdentificationIPUI.NewSweep();
 
         // Initialise skipped bool to false.
         skipped = false;
+
 
         // Because we can't know how many remotes there are on the network, we always run for the whole timeout time.
         for (int secs = 0; secs < ipSweepTimeout; secs++) {
@@ -104,10 +121,15 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             for (int i = 0; i < pings.Count; i++) {
                 Ping p = pings[i];
                 if (p.isDone) {
-                    Debug.Log("Found IP at " + p.ip.ToString());
+                    Debug.Log("Found IP at " + p.ip);
                     CreateIPUI(p.ip.ToString());
-                    foundIps.Add(p.ip);
+
+                    RemoteDevice device = new RemoteDevice(p.ip);
+                    foundDevices.Add(device);
                     seen.Push(i);
+
+                    // Send this device a /ping/
+                    device.SendNetMessage(pingMessage);
                 }
             }
 
@@ -124,23 +146,63 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             
         }
 
-        CompleteIPSweep(foundIps);
+        // Configure current flow devices
+        currentFlowDevices = new List<RemoteDevice>();
+        // TODO: Restructure this, double for loop (foreach, contains).
+        if (dontSkipIps) {
+            currentFlowDevices = foundDevices;
+        } else {
+            foreach (RemoteDevice device in foundDevices) {
+                if (pongsReceived.Contains(device.ip)) {
+                    currentFlowDevices.Add(device);
+                }
+            }
+        }
+
+        CompleteIPSweep(currentFlowDevices);
 
     }
 
-    void CompleteIPSweep(List<string> ips) {
+    // Receive /pong/'s
+    IEnumerator PongReceiver () {
+        UdpClient recvClient = new UdpClient(RemoteNetHandler.Port);
+        // Blank IPEndPoint to receive data about the sending IP.
+        IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+        while (state == State.Scanning) {
+            yield return null;
+            try {
+                if (recvClient.Available > 0) {
+                    byte [] data = recvClient.Receive(ref sender);
+                    string s = Encoding.ASCII.GetString(data);
+                    Debug.Log("Received " + s.ToString() + " from " + sender.Address.ToString());
+                    
+                    // If the message is pong, horray, it's a remote!
+                    if (s == "/pong/" || s.Contains("/ping/")) { // TODO: /ping/ is temp
+                        RemoteIdentificationIPUI.ConfirmByIP(sender.Address.ToString());
+                        // This device is confirmed, add it to the pong received list.
+                        pongsReceived.Add(sender.Address.ToString());
+                    }
+                }
+            } catch (Exception e) {
+                Debug.LogWarning(e.ToString());
+            }
+        }
+
+    }
+
+    void CompleteIPSweep(List<RemoteDevice> devices) {
         string ipList = "";
-        foreach (string s in ips.ToArray()) ipList += s + "  ";
+        foreach (RemoteDevice r in devices.ToArray()) ipList += r.ip + "  ";
         Debug.Log("Starting flow with IP List: " + ipList);
         // TODO: confirm these are all actual remotes using a /ping command
-        StartLinkingFlow(RemoteManager.GetRemotes(), ips);
+        StartLinkingFlow(RemoteManager.GetRemotes());
     }
 
     // ###########################
     // ID flow (IPs are now KNOWN)
     // ###########################
 
-    void StartLinkingFlow(List<RemoteObject> remoteObjects, List<string> ips) {
+    void StartLinkingFlow(List<RemoteObject> remoteObjects) {
         
         // Check state before starting flow.
         if (state == State.Identification) {
@@ -153,9 +215,6 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         uiIpListPanel.gameObject.SetActive(false);
         uiObjectPanel.gameObject.SetActive(true);
 
-        // Set global IP Address list to updated list
-        // This is done here to make sure that without doubt the IP list has been updated before continuing the flow
-        ipAddresses = ips;
 
         // UI - generate and show
         List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
@@ -169,7 +228,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         }
 
         // Make sure we're at the start of the list and then call the coroutine to start working through each remote.
-        currentIp = -1; // FIXME: wtf this should probably be a function
+        currentFlowDeviceID = -1; // FIXME: wtf this should probably be a function
         StartCoroutine(IdentificationCoroutine());
 
     }
@@ -178,7 +237,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
         
         RemoteDevice currentRemote = NextRemote();
         while (currentRemote != null) {
-            Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentIp + "]");
+            Debug.Log("Identifying remote at IP " + currentRemote.ip + "[" + currentFlowDeviceID + "]");
             IdentifyItem(currentRemote.ip);
             float timer = 0; // timer for repeated identification pings.
 
@@ -210,16 +269,16 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     // Called when a remote object/pi pair is confirmed or skipped in identification flow
     // Retrieves the next Remote device that needs pairing
     RemoteDevice NextRemote () {
-        currentIp++;
+        currentFlowDeviceID++;
 
         // Have gone through all remtoes, return null.
-        if (currentIp >= ipAddresses.Count) {
-            currentIp = -1;
+        if (currentFlowDeviceID >= currentFlowDevices.Count) {
+            currentFlowDeviceID = -1;
             return null; 
         }
 
         // Get the next remote and return it.
-        currentRemote = new RemoteDevice(ipAddresses[currentIp]);
+        currentRemote = currentFlowDevices[currentFlowDeviceID];
         return currentRemote;
     }
 
@@ -238,6 +297,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
             Time.timeScale = 1;
         }
         state = State.Idle;
+        
+        // Clear devices list so garbage collection can do its thing.
+        currentFlowDevices.Clear();
     }
 
     // ID flow helpers
