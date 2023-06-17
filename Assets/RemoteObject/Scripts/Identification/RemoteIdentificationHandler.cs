@@ -16,7 +16,6 @@ public class RemoteIdentificationHandler : MonoBehaviour {
     
     List<string> pongsReceived = new List<string>();
     List<RemoteDevice> currentFlowDevices;
-    [SerializeField] List<RemoteIdentificationUIItem> uiItems = new List<RemoteIdentificationUIItem>();
 
     [SerializeField] Canvas remoteIdentificationCanvas;
     [SerializeField] RectTransform uiIpListPanel;
