@@ -8,7 +8,7 @@ using System.Text;
 using System;
 
 // TODO: this script is getting chunky
-public class RemoteObjectIdentificationHandler : MonoBehaviour {
+public class RemoteIdentificationHandler : MonoBehaviour {
 
     enum State {Idle, Scanning, Identification};
 
@@ -16,7 +16,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     
     List<string> pongsReceived = new List<string>();
     List<RemoteDevice> currentFlowDevices;
-    [SerializeField] List<RemoteObjectIdentificationUIItem> uiItems = new List<RemoteObjectIdentificationUIItem>();
+    [SerializeField] List<RemoteIdentificationUIItem> uiItems = new List<RemoteIdentificationUIItem>();
 
     [SerializeField] Canvas remoteIdentificationCanvas;
     [SerializeField] RectTransform uiIpListPanel;
@@ -220,13 +220,13 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
 
 
         // UI - generate and show
-        List<RemoteObjectIdentificationUIItem> items = new List<RemoteObjectIdentificationUIItem>();
+        List<RemoteIdentificationUIItem> items = new List<RemoteIdentificationUIItem>();
         foreach (RemoteObject remoteObject in remoteObjects) {
             // Clear current remotepi.
             remoteObject.ResetRemote();
 
             // Create UI item for this object
-            RemoteObjectIdentificationUIItem item = CreateObjectUI(remoteObject);
+            RemoteIdentificationUIItem item = CreateObjectUI(remoteObject);
             items.Add(item);
         }
 
@@ -327,9 +327,9 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     }
 
     // Creates a button on the identification panel for a RemoteObject, returns its UI logic script.
-    RemoteObjectIdentificationUIItem CreateObjectUI (RemoteObject remote) {
+    RemoteIdentificationUIItem CreateObjectUI (RemoteObject remote) {
         GameObject itemObject = Instantiate(uiObjectPrefab, uiObjectPanel);
-        RemoteObjectIdentificationUIItem item = itemObject.GetComponent<RemoteObjectIdentificationUIItem>();
+        RemoteIdentificationUIItem item = itemObject.GetComponent<RemoteIdentificationUIItem>();
         item.Initialise(this, remote);
         return item;
     }
@@ -355,7 +355,7 @@ public class RemoteObjectIdentificationHandler : MonoBehaviour {
     
 
     // Called when a RemoteObjectIdentificationUIItem's button is pressed.
-    public void ItemSelected (RemoteObject remoteObject, RemoteObjectIdentificationUIItem ui) {
+    public void ItemSelected (RemoteObject remoteObject, RemoteIdentificationUIItem ui) {
         remoteObject.UpdateLinkedDevice(currentRemote);
         currentRemote.Assigned();
     }

@@ -3,13 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-public class RemoteObjectIdentificationUIItem : MonoBehaviour {
-    RemoteObjectIdentificationHandler handler;
+public class RemoteIdentificationUIItem : MonoBehaviour {
+    RemoteIdentificationHandler handler;
     RemoteObject remote; // The remote this UI item represents.
     [SerializeField] TMP_Text nameText;
     [SerializeField] Image iconImage;
 
-    public void Initialise (RemoteObjectIdentificationHandler handler, RemoteObject remote) {
+    public void Initialise (RemoteIdentificationHandler handler, RemoteObject remote) {
         this.handler = handler;
         this.remote = remote;
 
