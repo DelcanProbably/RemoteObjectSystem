@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RemoteSound", menuName = "RemoteObjectSystem/RemoteSound", order = 0)]
+[CreateAssetMenu(fileName = "RemoteAudioClip", menuName = "RemoteObjectSystem/RemoteAudioClip", order = 0)]
 public class RemoteAudioClip : RemoteAsset {
     [SerializeField] public AudioClip localClip;
     [SerializeField] string clipName;
