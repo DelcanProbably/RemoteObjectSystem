@@ -100,7 +100,7 @@ public class RemoteIdentificationHandler : MonoBehaviour {
         // To do this, we'll assume it is, and use a slash command that asks it to return a /pong/ command
 
         // Construct ping slash message - this is the same for all cases from this host.
-        string pingMessage = "/ping/" + RemoteManager.localIP + "/" + RemoteNetHandler.Port.ToString() + "/";
+        string pingMessage = "/ping/" + RemoteManager.localIP + "/" + (RemoteNetHandler.Port + 1).ToString() + "/";
 
         // Start checking for pongs
         StartCoroutine(PongReceiver());
@@ -167,7 +167,7 @@ public class RemoteIdentificationHandler : MonoBehaviour {
 
     // Receive /pong/'s
     IEnumerator PongReceiver () {
-        UdpClient recvClient = new UdpClient(RemoteNetHandler.Port);
+        UdpClient recvClient = new UdpClient(RemoteNetHandler.Port + 1);
         // Blank IPEndPoint to receive data about the sending IP.
         IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
         while (state == State.Scanning) {
@@ -179,7 +179,7 @@ public class RemoteIdentificationHandler : MonoBehaviour {
                     Debug.Log("Received " + s.ToString() + " from " + sender.Address.ToString());
                     
                     // If the message is pong, horray, it's a remote!
-                    if (s == "/pong/" || s.Contains("/ping/")) { // TODO: /ping/ is temp
+                    if (s.Contains("/pong")) {
                         RemoteIdentificationIPUI.ConfirmByIP(sender.Address.ToString());
                         // This device is confirmed, add it to the pong received list.
                         pongsReceived.Add(sender.Address.ToString());
@@ -189,7 +189,8 @@ public class RemoteIdentificationHandler : MonoBehaviour {
                 Debug.LogWarning(e.ToString());
             }
         }
-
+        Debug.Log("Stopped waiting for /pong/'s");
+        recvClient.Close();
     }
 
     void CompleteIPSweep(List<RemoteDevice> devices) {
