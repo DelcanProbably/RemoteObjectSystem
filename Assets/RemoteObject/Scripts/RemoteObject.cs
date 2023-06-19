@@ -38,7 +38,6 @@ public class RemoteObject : MonoBehaviour
         if (debugIPAddress != "") {
             device = new RemoteDevice(debugIPAddress);
         }
-        RemoteManager.RegisterRemote(this);
         
         // If the remoteName hasn't been set, we'll set it to the gameObject name.
         if (remoteName == "") {
@@ -47,6 +46,7 @@ public class RemoteObject : MonoBehaviour
     }
     
     private void Start() {
+        RemoteManager.RegisterRemote(this);
         UpdateFallbackMode();
     }
 
