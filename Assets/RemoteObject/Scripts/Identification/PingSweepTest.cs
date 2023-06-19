@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Net;
 
 // TODO: this is not used and is the base for code in RemoteObjectIdentificationHandler, but should be a standard class "PingSweep" => move Start in constructor, Coroutine as async
 public class PingSweepTest : MonoBehaviour
