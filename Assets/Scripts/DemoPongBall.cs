@@ -20,11 +20,10 @@ public class DemoPongBall : MonoBehaviour
     void FixedUpdate()
     {
         if (Mathf.Abs(transform.position.y) > yBouncePoint) {
-            ySpeed = -ySpeed;
+            ySpeed = Mathf.Abs(ySpeed) * (transform.position.y > 0 ? -1 : 1);
         }
 
         rb.velocity = new(xSpeed, ySpeed, 0);
-
     }
 
     private void OnCollisionEnter(Collision other) {
